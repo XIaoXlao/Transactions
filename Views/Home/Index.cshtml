@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body>
+
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Index">
+
+        <span>Select File:</span>
+
+        <input type="file" name="file" accept=".csv,.xml" max="1048576" />
+
+        <input type="submit" value="Upload" />
+
+        <br />
+
+        <span>@Html.Raw(ViewBag.Message)</span>
+
+    </form>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <input type="text" id="currencyValue" placeholder="Enter value">
+    <a id="searchByCurrency" class="btn btn-primary">Search Transactions By Currency</a>
+    <br />
+    <br />
+    <label for="startDateTime">Start Date and Time:</label>
+    <input type="datetime-local" id="startDateTime" name="startDateTime" required>
+    <label for="endDateTime">End Date and Time:</label>
+    <input type="datetime-local" id="endDateTime" name="endDateTime" required>
+    <a id="searchByTransdate" class="btn btn-primary">Search Transactions By Date Range</a>
+    <br />
+    <br />
+    @*<input type="text" id="statusValue" placeholder="Enter value">*@
+    <select id="statusValue" name="dropdown">
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Failed">Failed</option>
+        <option value="Finished">Finished</option>
+    </select>
+    <a id="searchByStatus" class="btn btn-primary">Search Transactions By Status</a>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchByCurrency').click(function () {
+            var inputValue = $('#currencyValue').val();
+            var url = '/api/GetTransactions?searchby=currency&searchValue=' + encodeURIComponent(inputValue);
+            window.location.href = url;
+        });
+
+        $('#searchByTransdate').click(function () {
+            var inputValue1 = $('#startDateTime').val();
+            var inputValue2 = $('#endDateTime').val();
+            var url = '/api/GetTransactions?searchby=transdate&searchValue1=' + encodeURIComponent(inputValue1) + '&searchValue2=' + encodeURIComponent(inputValue2);
+            window.location.href = url;
+        });
+
+        $('#searchByStatus').click(function () {
+            var inputValue = $('#statusValue').val();
+            var url = '/api/GetTransactions?searchby=status&searchValue=' + encodeURIComponent(inputValue);
+            window.location.href = url;
+        });
+    });
+</script>
+
+
+
+
+
+
